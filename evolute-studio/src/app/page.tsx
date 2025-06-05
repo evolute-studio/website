@@ -56,54 +56,67 @@ export default function Home() {
       </div>
 
 
-      {/* Logo - Floating game banner style */}
-      {showLogoDialog && (
-        <div className="fixed top-6 left-1/2 transform -translate-x-1/2 z-10 animate-slideIn">
-          <div className="relative">
-            {/* Banner background with dialog color scheme */}
-            <div
-              className="transform -skew-x-12 border-4"
-              style={{
-                backgroundColor: '#2B2C45',
-                borderColor: '#A47552',
-                boxShadow: '6px 6px 0px #7A5939, 8px 8px 0px #5A4129, inset 0 2px 0 rgba(255,255,255,0.1), inset 0 -2px 0 rgba(0,0,0,0.3)'
-              }}
-            >
-              <div className="transform skew-x-12">
-                <Image
-                  src="/wide.svg"
-                  alt="Evolute Studio Logo"
-                  width={420}
-                  height={100}
-                  className="pixel-art filter brightness-110"
-                />
-              </div>
-            </div>
+      {/* Top gradient overlay for readability */}
+      <div
+        className="fixed top-0 left-0 w-full h-64 z-5 pointer-events-none"
+        style={{
+          background: 'linear-gradient(180deg, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.3) 60%, transparent 100%)'
+        }}
+      ></div>
 
+      {/* Logo - Clean floating logo */}
+      {showLogoDialog && (
+        <>
+          {/* Mobile Logo */}
+          <div className="fixed top-0 left-0 w-full z-10 animate-slideIn p-4 sm:hidden -mt-10">
+            <Image
+              src="/square-logo.svg"
+              alt="Evolute Studio Logo"
+              width={650}
+              height={100}
+              className="pixel-art w-full h-auto"
+              style={{
+                filter: 'brightness(1.1) drop-shadow(0 2px 4px rgba(0,0,0,0.8))'
+              }}
+            />
           </div>
-        </div>
+
+          {/* Desktop Logo */}
+          <div className="hidden sm:block fixed top-8 left-1/2 transform -translate-x-1/2 z-10 animate-slideIn">
+            <Image
+              src="/wide.svg"
+              alt="Evolute Studio Logo"
+              width={700}
+              height={100}
+              className="pixel-art h-auto"
+              style={{
+                filter: 'brightness(1.1) drop-shadow(0 2px 4px rgba(0,0,0,0.8))'
+              }}
+            />
+          </div>
+        </>
       )}
 
       {/* Main Dialog - Bottom Center */}
       {showMainDialog && (
-        <div className="fixed top-3/4 left-1/2 transform -translate-x-1/2 z-10">
-          <div className="border-4 rounded-lg p-8 w-[500px] pixel-dialog-shadow animate-slideIn" style={{ backgroundColor: '#2B2C45', borderColor: '#A47552' }}>
+        <div className="fixed bottom-0 left-0 w-full sm:top-3/4 sm:left-1/2 sm:-translate-x-1/2 sm:w-auto z-10 sm:px-4">
+          <div className="border-0 border-t-4 sm:border-4 rounded-none sm:rounded-lg p-6 pb-12 md:pb-6 sm:p-8 w-full sm:w-[500px] pixel-dialog-shadow animate-slideInUp sm:animate-slideIn" style={{ backgroundColor: 'rgba(43, 44, 69, 0.85)', borderColor: '#A47552' }}>
             {/* Typewriter text */}
-            <div className="text-white text-xl leading-relaxed mb-6 text-center text-outlined font-bold">
+            <div className="text-white text-lg sm:text-xl leading-relaxed mb-4 sm:mb-6 text-center text-outlined font-bold">
               <TypewriterText
-                text="We're making  games. Join Us!"
+                text="We're making on-chain games. Join Us!"
                 onComplete={() => setShowLinks(true)}
               />
             </div>
 
             {/* Links */}
             {showLinks && (
-              <div className="flex gap-4 animate-fadeIn justify-center">
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 animate-fadeIn justify-center">
                 <a
                   href="https://discord.gg/s7XXRGRwVw"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-white font-bold py-3 px-6 transition-all duration-200 text-center pixel-btn text-outlined block"
+                  className="text-white font-bold py-2 sm:py-3 px-4 sm:px-6 text-sm sm:text-base transition-all duration-200 text-center pixel-btn text-outlined block"
                   style={{ backgroundColor: '#A47552' }}
                 >
                   Join Discord
@@ -112,7 +125,7 @@ export default function Home() {
                   href="https://x.com/evolute_studio"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-white font-bold py-3 px-6 transition-all duration-200 text-center pixel-btn text-outlined block"
+                  className="text-white font-bold py-2 sm:py-3 px-4 sm:px-6 text-sm sm:text-base transition-all duration-200 text-center pixel-btn text-outlined block"
                   style={{ backgroundColor: '#A47552' }}
                 >
                   Follow on X
