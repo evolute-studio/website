@@ -52,6 +52,7 @@ export default function Home() {
           fill
           className="object-cover"
           priority
+          unoptimized
         />
       </div>
 
@@ -110,8 +111,8 @@ export default function Home() {
             </div>
 
             {/* Links */}
-            {showLinks && (
-              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 animate-fadeIn justify-center">
+            <div className={`overflow-hidden transition-all duration-500 ease-out sm:transition-none ${showLinks ? 'max-h-40 mt-4 sm:max-h-none sm:mt-4' : 'max-h-0 mt-0 sm:max-h-0 sm:mt-0'}`}>
+              <div className={`flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center ${showLinks ? 'sm:animate-fadeIn' : ''}`}>
                 <a
                   href="https://discord.gg/s7XXRGRwVw"
                   target="_blank"
@@ -131,7 +132,7 @@ export default function Home() {
                   Follow on X
                 </a>
               </div>
-            )}
+            </div>
           </div>
         </div>
       )}

@@ -9,7 +9,7 @@ const exo2 = Exo_2({
 });
 
 export const metadata: Metadata = {
-  title: "Evolute Studio",
+  title: "Evolute - Indie Games Studio",
   description: "Evolute Studio - Indie Game Studio. Pixel, mobile, decentralized",
   icons: {
     icon: [
