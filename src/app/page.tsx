@@ -54,6 +54,7 @@ export default function Home() {
           preload="metadata"
           disablePictureInPicture
           x-webkit-airplay="deny"
+          poster="/poster.webp"
           className="w-full h-full object-cover video-bg"
           onLoadStart={() => {
             if (typeof window !== 'undefined') {
@@ -135,9 +136,6 @@ export default function Home() {
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-white font-bold py-2 sm:py-3 px-4 sm:px-6 text-sm sm:text-base transition-all duration-200 text-center pixel-btn text-outlined block bg-btn-primary"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
                   >
                     Join Discord
                   </motion.a>
@@ -146,9 +144,6 @@ export default function Home() {
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-white font-bold py-2 sm:py-3 px-4 sm:px-6 text-sm sm:text-base transition-all duration-200 text-center pixel-btn text-outlined block bg-btn-primary"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 0.6, ease: "easeOut", delay: 0.3 }}
                   >
                     Follow on X
                   </motion.a>
