@@ -10,6 +10,11 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-exo2);
   --font-mono: var(--font-exo2);
+  --color-dialog-background: oklch(0.24 0.06 258);
+  --color-dialog-border: oklch(0.55 0.08 52);
+  --color-btn-primary: oklch(0.55 0.08 52);
+  --color-overlay-gradient: linear-gradient(180deg, oklch(0 0 0 / 0.6) 0%, oklch(0 0 0 / 0.3) 60%, transparent 100%);
+  --filter-logo-glow: brightness(1.1) drop-shadow(0 2px 4px oklch(0 0 0 / 0.8));
 }
 
 @media (prefers-color-scheme: dark) {
@@ -51,18 +56,18 @@ body {
   text-transform: uppercase;
   letter-spacing: 1px;
   border: 3px solid #D4B896;
-  box-shadow: 
-    inset 2px 2px 0px rgba(255,255,255,0.3),
-    inset -2px -2px 0px rgba(0,0,0,0.3),
+  box-shadow:
+    inset 2px 2px 0px rgba(255, 255, 255, 0.3),
+    inset -2px -2px 0px rgba(0, 0, 0, 0.3),
     3px 3px 0px #6B4423;
   border-radius: 3px;
 }
 
 .pixel-btn:hover {
   transform: translate(1px, 1px);
-  box-shadow: 
-    inset 2px 2px 0px rgba(255,255,255,0.2),
-    inset -2px -2px 0px rgba(0,0,0,0.4),
+  box-shadow:
+    inset 2px 2px 0px rgba(255, 255, 255, 0.2),
+    inset -2px -2px 0px rgba(0, 0, 0, 0.4),
     2px 2px 0px #6B4423;
   border-color: #C4A886;
 }
@@ -73,6 +78,7 @@ body {
     opacity: 0;
     transform: translateY(-50px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -84,6 +90,7 @@ body {
     opacity: 0;
     transform: translateY(100%);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -94,8 +101,33 @@ body {
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
+  }
+}
+
+@keyframes slideInFromLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInFromRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
   }
 }
 
@@ -111,9 +143,17 @@ body {
   animation: fadeIn 0.5s ease-in;
 }
 
+.animate-slideInFromLeft {
+  animation: slideInFromLeft 0.6s ease-out;
+}
+
+.animate-slideInFromRight {
+  animation: slideInFromRight 0.6s ease-out;
+}
+
 /* Text with black outline */
 .text-outlined {
-  text-shadow: 
+  text-shadow:
     -1px -1px 0 #000,
     1px -1px 0 #000,
     -1px 1px 0 #000,
@@ -122,4 +162,33 @@ body {
     2px 0 0 #000,
     0 -2px 0 #000,
     0 2px 0 #000;
+}
+
+/* Video optimization styles */
+video {
+  /* Hardware acceleration for smooth playback */
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* Preload video on hover/interaction for better UX */
+.video-bg {
+  /* Optimize for fullscreen video backgrounds */
+  object-fit: cover;
+  object-position: center;
+  /* Prevent video controls and context menu */
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  video {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
