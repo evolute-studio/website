@@ -50,7 +50,6 @@ body {
 }
 
 .pixel-btn {
-  image-rendering: pixelated;
   border-style: solid;
   font-weight: bold;
   text-transform: uppercase;

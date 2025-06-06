@@ -114,7 +114,7 @@ export default function Home() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
         >
-          <div className="border-0 border-t-4 sm:border-4 rounded-none sm:rounded-lg p-6 pb-12 md:pb-6 sm:p-8 w-full sm:w-[500px] pixel-dialog-shadow bg-dialog-background/60 border-dialog-border">
+          <div className="border-0 border-t-4 sm:border-4 rounded-none sm:rounded-lg p-6 pb-12 md:pb-6 sm:p-8 w-full sm:w-[500px] pixel-dialog-shadow bg-dialog-background/80 border-dialog-border">
             <div className="text-white text-lg sm:text-xl leading-relaxed mb-4 sm:mb-6 text-center text-outlined font-bold">
               <TypewriterText
                 text="We're making on-chain games. Join Us!"
