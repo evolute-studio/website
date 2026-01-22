@@ -10,7 +10,7 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-exo2);
   --font-mono: var(--font-exo2);
-  --color-dialog-background: oklch(0.24 0.06 258);
+  --color-dialog-background: oklch(0.28 0.03 60);
   --color-dialog-border: oklch(0.55 0.08 52);
   --color-btn-primary: oklch(0.55 0.08 52);
   --color-overlay-gradient: linear-gradient(180deg, oklch(0 0 0 / 0.6) 0%, oklch(0 0 0 / 0.3) 60%, transparent 100%);
@@ -47,6 +47,58 @@ body {
 .pixel-dialog-shadow {
   box-shadow: 6px 6px 0px #7A5939, 8px 8px 0px #5A4129;
   border-style: solid;
+}
+
+/* Enhanced game dialog style */
+.game-dialog {
+  box-shadow: 
+    0 0 0 2px rgba(212, 184, 150, 0.3),
+    6px 6px 0px #7A5939, 
+    8px 8px 0px #5A4129,
+    0 0 40px rgba(234, 179, 8, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  border-style: solid;
+}
+
+/* Game button style */
+.game-btn {
+  border-style: solid;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border: 3px solid #D4B896;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.3),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.3),
+    0 4px 0 #6B4423,
+    0 6px 8px rgba(0, 0, 0, 0.3);
+  border-radius: 4px;
+  transition: all 0.1s ease;
+}
+
+.game-btn:hover {
+  transform: translateY(2px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.4),
+    0 2px 0 #6B4423,
+    0 3px 4px rgba(0, 0, 0, 0.3);
+  border-color: #E4C8A6;
+}
+
+.game-btn:active {
+  transform: translateY(4px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.4),
+    0 0px 0 #6B4423;
+}
+
+/* Pixel text effect */
+.pixel-text {
+  text-shadow: 
+    1px 1px 0 rgba(0, 0, 0, 0.5),
+    2px 2px 0 rgba(0, 0, 0, 0.3);
 }
 
 .pixel-btn {
@@ -190,4 +242,100 @@ video {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
+}
+
+/* Screen reader only - visually hidden but accessible */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* ============================================================================
+   ACCESSIBILITY - AA Level Compliance
+   ============================================================================ */
+
+/* Custom focus ring - bright orange/yellow inset */
+:focus {
+  outline: none;
+}
+
+:focus-visible {
+  outline: none;
+  border-radius: 4px;
+  box-shadow: 
+    inset 0 0 0 3px #FCD34D,
+    0 0 16px rgba(252, 211, 77, 0.6);
+}
+
+/* Focus ring for buttons */
+.game-btn:focus-visible,
+.pixel-btn:focus-visible {
+  outline: 3px solid #FCD34D;
+  outline-offset: 4px;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.3),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.3),
+    0 4px 0 #6B4423,
+    0 6px 8px rgba(0, 0, 0, 0.3),
+    0 0 20px rgba(252, 211, 77, 0.7);
+}
+
+/* Focus ring for quest items and interactive elements */
+a:focus-visible,
+button:focus-visible,
+[role="button"]:focus-visible,
+[tabindex="0"]:focus-visible {
+  outline: none;
+  box-shadow: 
+    inset 0 0 0 3px #FBBF24,
+    0 0 16px rgba(251, 191, 36, 0.7);
+}
+
+/* Focus ring for quest panel header (clickable) */
+.game-dialog [role="button"]:focus-visible,
+.game-dialog .cursor-pointer:focus-visible {
+  outline: none;
+  box-shadow: 
+    inset 0 0 0 2px #FCD34D,
+    0 0 12px rgba(252, 211, 77, 0.6);
+  border-radius: 6px;
+}
+
+/* Focus ring for quest items inside overflow container */
+.game-dialog a:focus-visible {
+  outline: none;
+  box-shadow: 
+    inset 0 0 0 3px #FCD34D,
+    0 0 0 1px rgba(0, 0, 0, 0.3),
+    inset 0 0 20px rgba(252, 211, 77, 0.3);
+  border-color: #FCD34D !important;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  :focus-visible {
+    outline: 4px solid #FBBF24;
+    outline-offset: 4px;
+  }
+}
+
+/* Safe area padding for devices with home indicator */
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* Hide scrollbar but keep scroll functionality */
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;  /* Chrome, Safari, Opera */
 }
