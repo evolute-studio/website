@@ -1,7 +1,8 @@
 'use client';
 
 import Image from 'next/image';
-import { motion } from 'framer-motion';
+import { motion, useAnimationControls } from 'framer-motion';
+import { useEffect, useState } from 'react';
 import { LINKS, QUEST_WIDTH, type Platform, type EarnedXP, type XPKey } from '@/lib/constants';
 import { PixelCorner } from '@/components/ui';
 import { DiscordIcon, XIcon, ChevronIcon } from '@/components/icons';
@@ -17,20 +18,98 @@ interface QuestPanelProps {
   platform: Platform;
   onOpenMageDuelVideo: () => void;
   onOpenMinerVideo: () => void;
+  totalXP: number;
+  lastEarnedXP: number | null;
 }
 
-export const QuestPanel = ({ isDesktop, isHydrated, collapsed, onToggle, earnedXP, onEarnXP, platform, onOpenMageDuelVideo, onOpenMinerVideo }: QuestPanelProps) => {
+export const QuestPanel = ({ isDesktop, isHydrated, collapsed, onToggle, earnedXP, onEarnXP, platform, onOpenMageDuelVideo, onOpenMinerVideo, totalXP, lastEarnedXP }: QuestPanelProps) => {
   const mageDuelLink = platform === 'ios' ? LINKS.appStore : LINKS.playStore;
+  const totalQuests = 5;
+  const completedQuests = Object.values(earnedXP).filter(Boolean).length;
+  const remainingTasks = totalQuests - completedQuests;
+  const [displayXP, setDisplayXP] = useState(0);
+  const [showEarned, setShowEarned] = useState(false);
+  const controls = useAnimationControls();
+
+  // Animate XP counting up
+  useEffect(() => {
+    if (totalXP === 0) return;
+    const duration = 400;
+    const steps = 15;
+    const increment = totalXP / steps;
+    let current = displayXP;
+    const stepTime = duration / steps;
+    const timer = setInterval(() => {
+      current += increment;
+      if (current >= totalXP) {
+        setDisplayXP(totalXP);
+        clearInterval(timer);
+      } else {
+        setDisplayXP(Math.floor(current));
+      }
+    }, stepTime);
+    return () => clearInterval(timer);
+  }, [totalXP]);
+
+  // Show earned animation
+  useEffect(() => {
+    if (lastEarnedXP && lastEarnedXP > 0) {
+      setShowEarned(true);
+      controls.start({ scale: [1, 1.05, 1] });
+      const timer = setTimeout(() => setShowEarned(false), 1200);
+      return () => clearTimeout(timer);
+    }
+  }, [lastEarnedXP, totalXP, controls]);
 
   return (
     <motion.div
-      className="fixed z-10 top-36 left-[4%] right-[4%] sm:top-auto sm:bottom-16 sm:left-4 sm:right-auto"
+      className="fixed z-10 top-40 left-[4%] right-[4%] sm:top-auto sm:bottom-16 sm:left-4 sm:right-auto flex flex-col gap-2"
       initial={{ opacity: 0, y: 50 }}
       animate={{ opacity: isHydrated ? 1 : 0, y: isHydrated ? 0 : 50 }}
       transition={{ duration: 0.7, ease: [0.4, 0, 0.2, 1] }}
     >
+      {/* XP Counter - above quest panel */}
+      <motion.div
+        className="relative border-4 rounded-lg game-dialog bg-dialog-background border-dialog-border transition-[width] duration-500 ease-in-out overflow-hidden"
+        style={{ width: isDesktop ? (collapsed ? QUEST_WIDTH.collapsed : QUEST_WIDTH.expanded) : 'auto' }}
+        animate={controls}
+        transition={{ duration: 0.3 }}
+      >
+        <PixelCorner position="tl" />
+        <PixelCorner position="tr" />
+        <PixelCorner position="bl" />
+        <PixelCorner position="br" />
+        <div className="absolute inset-2 border border-yellow-500/20 rounded pointer-events-none" />
+        
+        <div className="relative flex items-center justify-between px-4 py-2.5">
+          <div className="flex items-center gap-2">
+            <span className="text-yellow-400 text-lg">🏆</span>
+            <span className="text-yellow-400 text-sm font-bold tracking-wide uppercase whitespace-nowrap">Your XP</span>
+          </div>
+          <motion.span 
+            className="text-xl font-bold text-green-400 text-outlined whitespace-nowrap"
+            key={displayXP}
+          >
+            {displayXP}
+          </motion.span>
+          
+          {/* Floating +XP animation */}
+          {showEarned && lastEarnedXP && (
+            <motion.span
+              className="absolute -top-1 right-4 text-lg font-bold text-green-400 text-outlined whitespace-nowrap pointer-events-none"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: [0, 1, 1, 0], y: -20 }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
+            >
+              +{lastEarnedXP}
+            </motion.span>
+          )}
+        </div>
+      </motion.div>
+
+      {/* Quest Panel */}
       <div
-        className="relative border-4 rounded-lg p-4 game-dialog bg-dialog-background border-dialog-border transition-[width] duration-500 ease-in-out"
+        className="relative border-4 rounded-lg p-4 game-dialog bg-dialog-background border-dialog-border transition-[width] duration-500 ease-in-out overflow-hidden"
         style={{ width: isDesktop ? (collapsed ? QUEST_WIDTH.collapsed : QUEST_WIDTH.expanded) : 'auto' }}
       >
         <PixelCorner position="tl" />
@@ -53,11 +132,16 @@ export const QuestPanel = ({ isDesktop, isHydrated, collapsed, onToggle, earnedX
           <span className="text-yellow-400 text-lg">📜</span>
           <span className="text-yellow-400 text-sm font-bold tracking-wide uppercase whitespace-nowrap">New Quest!</span>
           <span className="flex-1" />
-          <span
-            className="text-xs text-green-400 font-bold flex items-center gap-1 whitespace-nowrap overflow-hidden transition-all duration-500 ease-in-out"
-            style={{ maxWidth: collapsed ? 0 : 120, opacity: collapsed ? 0 : 1 }}
-          >
-            <span className="text-yellow-400">🏆</span>+350 XP Total
+          <span className="text-sm font-bold whitespace-nowrap text-right flex items-center gap-2">
+            <span 
+              className="overflow-hidden transition-all duration-500 ease-in-out"
+              style={{ maxWidth: collapsed ? 0 : 80, opacity: collapsed ? 0 : 1 }}
+            >
+              <span className="whitespace-nowrap text-yellow-400">tasks done</span>
+            </span>
+            <span className="shrink-0" style={{ color: remainingTasks === 0 ? '#9ca3af' : '#4ade80' }}>
+              {completedQuests}/{totalQuests}
+            </span>
           </span>
           <ChevronIcon collapsed={collapsed} />
         </div>
@@ -115,3 +199,4 @@ export const QuestPanel = ({ isDesktop, isHydrated, collapsed, onToggle, earnedX
     </motion.div>
   );
 };
+

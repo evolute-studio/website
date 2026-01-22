@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { LINKS, type XPKey, type EarnedXP } from '@/lib/constants';
@@ -11,9 +11,19 @@ import { VideoModal } from '@/components/VideoModal';
 
 type VideoType = 'mageDuel' | 'miner' | null;
 
+// XP values for each quest
+const XP_VALUES: Record<XPKey, number> = {
+  mage: 100,
+  discord: 50,
+  x: 50,
+  video: 75,
+  minerVideo: 75,
+};
+
 export default function Home() {
   const [showLogo, setShowLogo] = useState(false);
   const [earnedXP, setEarnedXP] = useState<EarnedXP>({ mage: false, discord: false, x: false, video: false, minerVideo: false });
+  const [lastEarnedXP, setLastEarnedXP] = useState<number | null>(null);
   const [activeVideo, setActiveVideo] = useState<VideoType>(null);
   const platform = usePlatform();
   const { isDesktop, isHydrated, questCollapsed, setQuestCollapsed } = useResponsive();
@@ -23,9 +33,18 @@ export default function Home() {
   const openVideo = (type: VideoType) => setActiveVideo(type);
   const closeVideo = () => setActiveVideo(null);
 
-  const handleEarnXP = (key: XPKey) => {
-    setEarnedXP(prev => ({ ...prev, [key]: true }));
-  };
+  // Calculate total XP
+  const totalXP = Object.entries(earnedXP).reduce((sum, [key, earned]) => {
+    return sum + (earned ? XP_VALUES[key as XPKey] : 0);
+  }, 0);
+
+  const handleEarnXP = useCallback((key: XPKey) => {
+    setEarnedXP(prev => {
+      if (prev[key]) return prev; // Already earned
+      setLastEarnedXP(XP_VALUES[key]);
+      return { ...prev, [key]: true };
+    });
+  }, []);
 
   const mageDuelLink = platform === 'ios' ? LINKS.appStore : LINKS.playStore;
 
@@ -123,6 +142,8 @@ export default function Home() {
         platform={platform}
         onOpenMageDuelVideo={() => openVideo('mageDuel')}
         onOpenMinerVideo={() => openVideo('miner')}
+        totalXP={totalXP}
+        lastEarnedXP={lastEarnedXP}
       />
 
       {/* Video Modals */}

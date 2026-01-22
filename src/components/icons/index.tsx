@@ -18,7 +18,7 @@ export const CheckmarkIcon = ({ className = "w-3 h-3" }: { className?: string })
 
 export const ChevronIcon = ({ collapsed }: { collapsed: boolean }) => (
   <svg
-    className="w-5 h-5 text-yellow-400 ml-2 flex-shrink-0 transition-transform duration-500 ease-in-out"
+    className="w-5 h-5 text-yellow-400 flex-shrink-0 transition-transform duration-500 ease-in-out relative z-20"
     viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"

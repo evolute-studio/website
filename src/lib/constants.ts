@@ -4,7 +4,7 @@ export const BREAKPOINTS = {
 } as const;
 
 export const QUEST_WIDTH = { 
-  collapsed: 200, 
+  collapsed: 230, 
   expanded: 360 
 } as const;
 
